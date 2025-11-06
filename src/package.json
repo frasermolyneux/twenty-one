@@ -1,0 +1,29 @@
+{
+  "name": "blackjack-card-counter",
+  "version": "1.0.0",
+  "description": "A casino-themed practice website for improving blackjack card counting skills",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "python -m http.server 8080",
+    "build": "echo 'No build step required for static site'",
+    "deploy": "npx swa deploy --env production"
+  },
+  "keywords": [
+    "blackjack",
+    "card-counting",
+    "casino",
+    "practice",
+    "math",
+    "game"
+  ],
+  "author": "Fraser Molyneux",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@azure/static-web-apps-cli": "^1.1.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
