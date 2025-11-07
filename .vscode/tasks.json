@@ -1,0 +1,33 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "twenty-one: npm install",
+            "type": "shell",
+            "command": "npm install",
+            "options": {
+                "cwd": "${workspaceFolder}/src"
+            },
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "twenty-one: start dev server",
+            "type": "npm",
+            "script": "start",
+            "path": "src",
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "dev-server",
+                "pattern": {
+                    "regexp": "."
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^.*Serving!.*$",
+                    "endsPattern": "^.*http://localhost:\\d+.*$"
+                }
+            }
+        }
+    ]
+}

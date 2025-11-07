@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "twenty-one: Launch Local Site",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "npm run start",
+            "cwd": "${workspaceFolder}/src",
+            "serverReadyAction": {
+                "pattern": "http://localhost:(\\d+)",
+                "uriFormat": "http://localhost:%s",
+                "action": "debugWithChrome"
+            }
+        }
+    ]
+}

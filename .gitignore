@@ -2,3 +2,15 @@ terraform/.terraform/
 terraform/.terraform.lock.hcl
 terraform/*.tfstate
 terraform/*.tfstate.*
+
+# Node.js / npm artifacts
+node_modules/
+src/node_modules/
+package-lock.json
+npm-debug.log*
+pnpm-lock.yaml
+pnpm-debug.log*
+yarn.lock
+yarn-debug.log*
+yarn-error.log*
+.npm/
