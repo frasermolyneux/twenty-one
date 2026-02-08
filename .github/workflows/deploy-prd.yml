@@ -1,30 +1,53 @@
-name: Release to Production
+name: Deploy Prod
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * 4"
   push:
     branches:
       - main
 
 permissions: {}
 
-concurrency:
-  group: ${{ github.workflow }}
-
 jobs:
-  terraform-plan-and-apply-dev:
+  build-and-test:
     permissions:
-      id-token: write
       contents: read
-    environment: Development
+    if: github.event_name != 'push' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-
-    concurrency:
-      group: ${{ github.repository }}-dev
-
     steps:
       - uses: actions/checkout@v6
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: src
+
+      - name: Build static site
+        run: npm run build
+        working-directory: src
+
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: static-site
+          path: src
+
+  terraform-plan-and-apply-dev:
+    permissions:
+      contents: read
+      id-token: write
+    if: github.event_name == 'push'
+    environment: Development
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.repository }}-dev
+    steps:
       - uses: frasermolyneux/actions/terraform-plan-and-apply@main
         with:
           terraform-folder: "terraform"
@@ -51,17 +74,20 @@ jobs:
 
   static-web-app-deploy-dev:
     permissions:
-      id-token: write
       contents: read
+      id-token: write
+    if: github.event_name == 'push'
     environment: Development
+    needs: [build-and-test, terraform-plan-and-apply-dev]
     runs-on: ubuntu-latest
-    needs: [terraform-plan-and-apply-dev]
-
     concurrency:
       group: ${{ github.repository }}-dev
-
     steps:
-      - uses: actions/checkout@v6
+      - name: Download site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: static-site
+          path: static-site
 
       - name: Az CLI Login
         uses: azure/login@v2
@@ -84,23 +110,25 @@ jobs:
           azure_static_web_apps_api_token: ${{ env.static_web_app_api_key }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: upload
-          app_location: src
+          app_location: static-site/src
           skip_app_build: true
 
   terraform-plan-and-apply-prd:
     permissions:
-      id-token: write
       contents: read
+      id-token: write
     environment: Production
+    needs:
+      - build-and-test
+      - terraform-plan-and-apply-dev
     runs-on: ubuntu-latest
-    needs: [terraform-plan-and-apply-dev, static-web-app-deploy-dev]
-
     concurrency:
       group: ${{ github.repository }}-prd
-
+    if: |
+      always() &&
+      needs.build-and-test.result == 'success' &&
+      (needs.terraform-plan-and-apply-dev.result == 'success' || needs.terraform-plan-and-apply-dev.result == 'skipped')
     steps:
-      - uses: actions/checkout@v6
-
       - uses: frasermolyneux/actions/terraform-plan-and-apply@main
         with:
           terraform-folder: "terraform"
@@ -127,17 +155,22 @@ jobs:
 
   static-web-app-deploy-prd:
     permissions:
-      id-token: write
       contents: read
+      id-token: write
     environment: Production
+    needs:
+      - build-and-test
+      - terraform-plan-and-apply-prd
+      - static-web-app-deploy-dev
     runs-on: ubuntu-latest
-    needs: [terraform-plan-and-apply-prd]
-
     concurrency:
       group: ${{ github.repository }}-prd
-
     steps:
-      - uses: actions/checkout@v6
+      - name: Download site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: static-site
+          path: static-site
 
       - name: Az CLI Login
         uses: azure/login@v2
@@ -160,5 +193,5 @@ jobs:
           azure_static_web_apps_api_token: ${{ env.static_web_app_api_key }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: upload
-          app_location: src
+          app_location: static-site/src
           skip_app_build: true
