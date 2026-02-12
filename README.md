@@ -7,6 +7,7 @@
 [![Destroy Development](https://github.com/frasermolyneux/twenty-one/actions/workflows/destroy-development.yml/badge.svg)](https://github.com/frasermolyneux/twenty-one/actions/workflows/destroy-development.yml)
 [![Destroy Environment](https://github.com/frasermolyneux/twenty-one/actions/workflows/destroy-environment.yml/badge.svg)](https://github.com/frasermolyneux/twenty-one/actions/workflows/destroy-environment.yml)
 [![Dependabot Automerge](https://github.com/frasermolyneux/twenty-one/actions/workflows/dependabot-automerge.yml/badge.svg)](https://github.com/frasermolyneux/twenty-one/actions/workflows/dependabot-automerge.yml)
+[![Copilot Setup Steps](https://github.com/frasermolyneux/twenty-one/actions/workflows/copilot-setup-steps.yml/badge.svg)](https://github.com/frasermolyneux/twenty-one/actions/workflows/copilot-setup-steps.yml)
 
 ## Documentation
 * [Development Workflows](/docs/development-workflows.md) - Branch strategy, CI/CD triggers, and typical development flows for the Azure Static Web App.
