@@ -21,7 +21,7 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "@azure/static-web-apps-cli": "^1.1.0"
+    "@azure/static-web-apps-cli": "^2.0.8"
   },
   "engines": {
     "node": ">=14.0.0"
