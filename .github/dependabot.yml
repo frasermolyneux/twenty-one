@@ -1,0 +1,19 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    assignees: ["frasermolyneux"]
+    directory: "/src"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "terraform"
+    assignees: ["frasermolyneux"]
+    directory: "/terraform"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "github-actions"
+    assignees: ["frasermolyneux"]
+    directory: "/"
+    schedule:
+      interval: "daily"
