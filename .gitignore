@@ -14,3 +14,6 @@ yarn.lock
 yarn-debug.log*
 yarn-error.log*
 .npm/
+
+# Shared Copilot configuration checked out during copilot-setup-steps
+.github-copilot/
