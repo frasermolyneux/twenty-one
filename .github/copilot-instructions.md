@@ -1,5 +1,7 @@
 # Copilot Instructions
 
+> Shared conventions: see [`.github-copilot/.github/instructions/terraform.instructions.md`](../../.github-copilot/.github/instructions/terraform.instructions.md) for the standard Terraform layout, providers, remote-state pattern, validation commands, and CI/CD workflows.
+
 - **Purpose**: Single-page blackjack card-counting trainer for practice, hosted as an Azure Static Web App with offline support.
 - **Key files**: UI shell in [src/index.html](src/index.html) and [src/styles.css](src/styles.css); game logic in [src/script.js](src/script.js); service worker caching in [src/sw.js](src/sw.js); SPA routing fallback in [src/staticwebapp.config.json](src/staticwebapp.config.json); CI/CD docs in [docs/development-workflows.md](docs/development-workflows.md); infrastructure definitions under [terraform/](terraform/).
 - **Game engine**: `BlackjackTrainer` class manages `gameState` (mode, timer, cards, stats). DOM references collected in `initializeElements`, events wired in `bindEvents`. Card generation randomizes suit/rank with simple Ace adjustment (drop from 11 to 1 to avoid totals over 21) before rendering card divs.
