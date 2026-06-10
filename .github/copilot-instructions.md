@@ -14,3 +14,9 @@
 - **CI/CD**: Workflows in [.github/workflows](.github/workflows) build the static site, run Terraform plan/apply for dev/prd, and deploy via Azure Static Web Apps (see label-driven paths in [docs/development-workflows.md](docs/development-workflows.md)). Code quality uses SonarCloud and CodeQL; destroy workflows tear down environments.
 - **Infrastructure**: Terraform modules under [terraform/](terraform/) manage Azure resources; GitHub environment OIDC variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` are expected by the reusable actions.
 - **Gotchas**: Maintain ASCII content; keep timer cleared when switching modes; update service worker cache name when adding assets; ensure `staticwebapp.config.json` MIME mappings stay aligned with added file types.
+
+## Org conventions via MCP (when available)
+
+If a `frasermolyneux-copilot` MCP server is configured in your client (`.vscode/mcp.json`, the GitHub Copilot coding-agent MCP config at `.github/copilot/mcp_config.json`, or an equivalent stdio MCP wire-up), **prefer its tools** over your own assumptions when answering questions about org standards, branching, workflows, Terraform, .NET projects, Azure patterns, or shared library / platform consumption contracts. The tool surface is `list_instructions`, `get_instruction`, `search_instructions`, plus the matching `_prompts` and `_agents` equivalents (seven tools total). The catalog source-of-truth lives in `frasermolyneux/.github-copilot` — see `mcp-server/README.md` there for the tool contract.
+
+This is **complementary** to the file-load model: if `./.github-copilot/` is checked out in the runner (per `copilot-setup-steps.yml`), continue to read those files directly. If both are available, prefer MCP for freshness. If no MCP server is configured in your client, treat this section as a no-op and fall back to the file paths above.
