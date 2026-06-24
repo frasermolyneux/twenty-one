@@ -1,13 +1,13 @@
 # Twenty One
 [![Build and Test](https://github.com/frasermolyneux/twenty-one/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/frasermolyneux/twenty-one/actions/workflows/build-and-test.yml)
-[![PR Verify](https://github.com/frasermolyneux/twenty-one/actions/workflows/pr-verify.yml/badge.svg)](https://github.com/frasermolyneux/twenty-one/actions/workflows/pr-verify.yml)
 [![Code Quality](https://github.com/frasermolyneux/twenty-one/actions/workflows/codequality.yml/badge.svg)](https://github.com/frasermolyneux/twenty-one/actions/workflows/codequality.yml)
+[![Copilot Setup Steps](https://github.com/frasermolyneux/twenty-one/actions/workflows/copilot-setup-steps.yml/badge.svg)](https://github.com/frasermolyneux/twenty-one/actions/workflows/copilot-setup-steps.yml)
+[![Dependabot Auto-Merge](https://github.com/frasermolyneux/twenty-one/actions/workflows/dependabot-automerge.yml/badge.svg)](https://github.com/frasermolyneux/twenty-one/actions/workflows/dependabot-automerge.yml)
 [![Deploy Dev](https://github.com/frasermolyneux/twenty-one/actions/workflows/deploy-dev.yml/badge.svg)](https://github.com/frasermolyneux/twenty-one/actions/workflows/deploy-dev.yml)
 [![Deploy Prd](https://github.com/frasermolyneux/twenty-one/actions/workflows/deploy-prd.yml/badge.svg)](https://github.com/frasermolyneux/twenty-one/actions/workflows/deploy-prd.yml)
 [![Destroy Development](https://github.com/frasermolyneux/twenty-one/actions/workflows/destroy-development.yml/badge.svg)](https://github.com/frasermolyneux/twenty-one/actions/workflows/destroy-development.yml)
 [![Destroy Environment](https://github.com/frasermolyneux/twenty-one/actions/workflows/destroy-environment.yml/badge.svg)](https://github.com/frasermolyneux/twenty-one/actions/workflows/destroy-environment.yml)
-[![Dependabot Automerge](https://github.com/frasermolyneux/twenty-one/actions/workflows/dependabot-automerge.yml/badge.svg)](https://github.com/frasermolyneux/twenty-one/actions/workflows/dependabot-automerge.yml)
-[![Copilot Setup Steps](https://github.com/frasermolyneux/twenty-one/actions/workflows/copilot-setup-steps.yml/badge.svg)](https://github.com/frasermolyneux/twenty-one/actions/workflows/copilot-setup-steps.yml)
+[![PR Verify](https://github.com/frasermolyneux/twenty-one/actions/workflows/pr-verify.yml/badge.svg)](https://github.com/frasermolyneux/twenty-one/actions/workflows/pr-verify.yml)
 
 ## Documentation
 * [Development Workflows](/docs/development-workflows.md) - Branch strategy, CI/CD triggers, and typical development flows for the Azure Static Web App.
