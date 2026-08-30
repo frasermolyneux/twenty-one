@@ -14,7 +14,7 @@ Target: Engineers working on twenty-one (Azure Static Web App). Covers branch st
 - **pr-verify.yml**: Validation pipeline (runs on PR open, updates, reopen, ready for review, label changes)
   - Build and package static site
   - Terraform plan for dev by default (skips dependabot and drafts)
-  - Terraform plan+apply and deploy to dev when labeled `deploy-dev`
+  - Terraform plan+apply and deploy to dev when labeled `deploy-dev` (Dependabot-authored PRs are excluded from apply/deploy even when labeled; validate dev deploys from a non-dependabot branch)
   - Terraform plan for prd when labeled `run-prd-plan`
   - Concurrency groups prevent parallel dev/prd operations
 
@@ -77,6 +77,7 @@ graph TD
 
 - Copilot branches follow the same rules; drafts and dependabot PRs skip Terraform by default
 - Add `deploy-dev` to run dev plan/apply + deploy; add `run-prd-plan` to run the prd plan
+- Dependabot-authored PRs only ever run the read-only dev plan; the `deploy-dev` apply/deploy jobs are guarded to non-dependabot authors, so exercise the dev deployment from a regular feature branch
 
 ## Pipeline Building Blocks
 
