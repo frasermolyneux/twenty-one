@@ -1,16 +1,21 @@
 # Copilot Instructions
 
-> Shared conventions: see [`.github-copilot/.github/instructions/terraform.instructions.md`](../../.github-copilot/.github/instructions/terraform.instructions.md) for the standard Terraform layout, providers, remote-state pattern, validation commands, and CI/CD workflows.
+Twenty One is a framework-free blackjack practice site hosted as an Azure Static Web App, with Terraform-managed infrastructure.
 
-- **Purpose**: Single-page blackjack card-counting trainer for practice, hosted as an Azure Static Web App with offline support.
-- **Key files**: UI shell in [src/index.html](src/index.html) and [src/styles.css](src/styles.css); game logic in [src/script.js](src/script.js); service worker caching in [src/sw.js](src/sw.js); SPA routing fallback in [src/staticwebapp.config.json](src/staticwebapp.config.json); CI/CD docs in [docs/development-workflows.md](docs/development-workflows.md); infrastructure definitions under [terraform/](terraform/).
-- **Game engine**: `BlackjackTrainer` class manages `gameState` (mode, timer, cards, stats). DOM references collected in `initializeElements`, events wired in `bindEvents`. Card generation randomizes suit/rank with simple Ace adjustment (drop from 11 to 1 to avoid totals over 21) before rendering card divs.
-- **Modes**: multiple-choice and timed share button options; timed also runs a countdown/pause toggle; input mode uses a numeric field; practice mode reveals the answer and advances after a short delay. Stats tracked: streak, score (with bonuses for card count, speed, streaks), accuracy, best streak.
-- **Flow**: start at mode selection → settings → `startGame` shows the game area → `nextRound` resets timer, generates cards, and configures the answer UI. Feedback overlay shows for non-practice modes; `continue` or space advances; `Escape` returns to mode selection. Number keys 1-4 pick options in choice modes.
-- **Persistence**: `saveStats` writes JSON to localStorage key `blackjackTrainerStats`; `loadStats` restores `bestStreak` only to avoid inflating totals across sessions. Call `blackjackTrainer.reset()` (dev helper) to clear stats.
-- **Timers**: `startTimer` sets `timeLeft` from `timerDuration` and updates the circular display; urgent styling toggles when <=3 seconds. Always call `clearTimer` before starting a new round or pausing to prevent multiple intervals.
-- **Offline/hosting**: Service worker caches shell assets (HTML/CSS/JS plus fonts). `CACHE_NAME` in [src/sw.js](src/sw.js) should be bumped when assets change to avoid stale caches. SPA rewrite in [src/staticwebapp.config.json](src/staticwebapp.config.json) serves `index.html` for all routes.
-- **Commands**: From `src/`, `npm install` then `npm run dev` (Python http.server on 8080) for quick preview, or `npm start` (npx serve). `npm run build` is a no-op placeholder for CI; `npm run deploy` uses Azure Static Web Apps CLI.
-- **CI/CD**: Workflows in [.github/workflows](.github/workflows) build the static site, run Terraform plan/apply for dev/prd, and deploy via Azure Static Web Apps (see label-driven paths in [docs/development-workflows.md](docs/development-workflows.md)). Code quality uses SonarCloud and CodeQL; destroy workflows tear down environments.
-- **Infrastructure**: Terraform modules under [terraform/](terraform/) manage Azure resources; GitHub environment OIDC variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` are expected by the reusable actions.
-- **Gotchas**: Maintain ASCII content; keep timer cleared when switching modes; update service worker cache name when adding assets; ensure `staticwebapp.config.json` MIME mappings stay aligned with added file types.
+## Layout and boundaries
+
+- Maintained application files are [`../src/index.html`](../src/index.html), [`../src/styles.css`](../src/styles.css), and [`../src/script.js`](../src/script.js).
+- [`../src/sw.js`](../src/sw.js) owns offline caching. Bump `CACHE_NAME` when cached assets change so clients receive the new files.
+- Keep MIME mappings and the SPA fallback in [`../src/staticwebapp.config.json`](../src/staticwebapp.config.json) aligned with added asset types.
+- The site has no application build pipeline: `npm run build` is intentionally a no-op. Do not introduce a framework or bundler without an explicit requirement.
+- Terraform under [`../terraform`](../terraform) owns the Static Web App and DNS integration. Preserve provider constraints, state boundaries, naming, and OIDC authentication.
+- `.terraform.lock.hcl` is ignored; committed provider constraints define Terraform compatibility.
+
+## Validation
+
+- Preview from `src/` with `npm run dev` or `npm start`.
+- For maintained JavaScript changes, use the browser-focused checks documented by the repository; no unit-test runner is configured.
+- Terraform formatting: `terraform -chdir=terraform fmt -check -recursive`.
+- Use state-backed Terraform plans only for infrastructure changes with the required environment access.
+
+See [`../docs/development-workflows.md`](../docs/development-workflows.md) for deployment behavior and [`../AGENTS.md`](../AGENTS.md) for the portable execution brief.
