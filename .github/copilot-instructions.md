@@ -9,7 +9,7 @@ Twenty One is a framework-free blackjack practice site hosted as an Azure Static
 - Keep MIME mappings and the SPA fallback in [`../src/staticwebapp.config.json`](../src/staticwebapp.config.json) aligned with added asset types.
 - The site has no application build pipeline: `npm run build` is intentionally a no-op. Do not introduce a framework or bundler without an explicit requirement.
 - Terraform under [`../terraform`](../terraform) owns the Static Web App and DNS integration. Preserve provider constraints, state boundaries, naming, and OIDC authentication.
-- `.terraform.lock.hcl` is ignored; committed provider constraints define Terraform compatibility.
+- Commit each root's `.terraform-version` and `.terraform.lock.hcl`. Select the exact root CLI pin before invoking Terraform; normal initialization uses `-lockfile=readonly`. Regenerate provider selections only in a reviewed dependency-update PR; never commit state, plans, or `.terraform/`.
 
 ## Validation
 

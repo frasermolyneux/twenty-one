@@ -21,7 +21,7 @@ npm start            # npx serve .
 
 # Terraform validation
 terraform -chdir=terraform fmt -check -recursive
-terraform -chdir=terraform init -backend-config=backends/dev.backend.hcl
+terraform -chdir=terraform init -lockfile=readonly -backend-config=backends/dev.backend.hcl
 terraform -chdir=terraform validate
 terraform -chdir=terraform plan -var-file=tfvars/dev.tfvars
 ```
@@ -33,7 +33,7 @@ terraform -chdir=terraform plan -var-file=tfvars/dev.tfvars
 - Bump `CACHE_NAME` in `src/sw.js` whenever cached assets (`index.html`, `styles.css`, `script.js`, the Google Fonts URL) change, so the service worker doesn't serve stale content.
 - Keep `src/staticwebapp.config.json` `mimeTypes` aligned with any new served file extensions.
 - `terraform/static_web_app.tf` owns the `azurerm_static_web_app`, its CNAME record, and custom domain binding. This repo resolves its resource group and DNS zone directly via data sources — it does not consume `platform-hosting`/`platform-monitoring` remote state.
-- `.terraform.lock.hcl` and `package-lock.json` are intentionally gitignored — don't commit them.
+- Commit each root's `.terraform-version` and `.terraform.lock.hcl`. Select the exact root CLI pin before invoking Terraform; normal initialization uses `-lockfile=readonly`. Regenerate provider selections only in a reviewed dependency-update PR; never commit state, plans, or `.terraform/`. `package-lock.json` remains ignored under the existing application policy.
 
 ## Do not
 
