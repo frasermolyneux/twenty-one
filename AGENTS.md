@@ -40,3 +40,6 @@ terraform -chdir=terraform plan -var-file=tfvars/dev.tfvars
 - Don't modify `.github/workflows/`, `.github/dependabot.yml`, release/deploy config, or repository settings unless that is the explicit task.
 - Don't touch Terraform provider/version pins or resource naming/tagging conventions.
 - Don't introduce client secrets, connection strings, or hard-coded subscription IDs/GUIDs — auth is OIDC + managed identity only.
+
+
+CI-only main pushes run change detection but skip cloud/backend deployment jobs. Automatic deployment requires a change to the workload inputs already declared by the deployment filters; scheduled maintenance and explicit workflow dispatch retain their existing behavior. A deployment-workflow-only change requires explicit dispatch to exercise cloud operations.
