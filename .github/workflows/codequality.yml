@@ -46,6 +46,10 @@ jobs:
         run: npm install
         working-directory: src
 
+      - name: Prepare managed SonarCloud policy
+        id: sonar-policy
+        uses: frasermolyneux/actions/sonar-policy-arguments@sonar-policy-arguments/v1.0
+
       - name: SonarCloud Analysis
         uses: SonarSource/sonarcloud-github-action@v5
         env:
@@ -56,6 +60,7 @@ jobs:
             -Dsonar.projectKey=frasermolyneux_twenty-one
             -Dsonar.organization=frasermolyneux
             -Dsonar.sources=.
+            ${{ steps.sonar-policy.outputs.cli-arguments }}
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@9b3254085494b55a0f7c4c2b3d2d52cc712ce370
