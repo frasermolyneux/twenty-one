@@ -45,8 +45,9 @@ jobs:
     concurrency:
       group: ${{ github.repository }}-dev
     steps:
-      - uses: frasermolyneux/actions/terraform-plan-and-apply@terraform-plan-and-apply/v2.0.1
+      - uses: frasermolyneux/actions/terraform-plan-and-apply@027d7e31bb32b734090aaed01b36d74f1d658b61 # v5.0.0
         with:
+          terraform-version: "1.17.1"
           terraform-folder: "terraform"
           terraform-var-file: "tfvars/dev.tfvars"
           terraform-backend-file: "backends/dev.backend.hcl"
