@@ -48,7 +48,7 @@ jobs:
 
       - name: Prepare managed SonarCloud policy
         id: sonar-policy
-        uses: frasermolyneux/actions/sonar-policy-arguments@sonar-policy-arguments/v1.0
+        uses: frasermolyneux/actions/sonar-policy-arguments@e24d3b55e9f750002d8cab12daccc5d5a3d8ccc2 # v1.0.1
 
       - name: SonarCloud Analysis
         uses: SonarSource/sonarcloud-github-action@v5
@@ -77,7 +77,7 @@ jobs:
       id-token: write
       security-events: write
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-    uses: frasermolyneux/actions/.github/workflows/devops-secure-scanning.yml@main
+    uses: frasermolyneux/actions/.github/workflows/devops-secure-scanning.yml@a6271c58ed8e8f3b6fbdb738ac7566863fdc38c8 # v1.0.0
 
   dependency-review:
     permissions:
