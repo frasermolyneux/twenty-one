@@ -7,7 +7,7 @@ Static blackjack card-counting trainer (vanilla HTML/CSS/JS) hosted as an Azure 
 ## Layout
 
 - `src/` — the site: `index.html`, `styles.css`, `script.js` (game logic), `sw.js` (service worker cache), `staticwebapp.config.json` (SPA routing + MIME types)
-- `terraform/` — Azure Static Web App + custom domain (CNAME) via `azurerm`/`time` providers, per-env `backends/` and `tfvars/`
+- `terraform/` — Azure Static Web App + Cloudflare custom-domain CNAME, per-env `backends/` and `tfvars/`
 - `docs/development-workflows.md` — CI/CD branch strategy and trigger reference (don't duplicate it here)
 
 ## Commands (evidenced only)
@@ -32,7 +32,7 @@ terraform -chdir=terraform plan -var-file=tfvars/dev.tfvars
 
 - Bump `CACHE_NAME` in `src/sw.js` whenever cached assets (`index.html`, `styles.css`, `script.js`, the Google Fonts URL) change, so the service worker doesn't serve stale content.
 - Keep `src/staticwebapp.config.json` `mimeTypes` aligned with any new served file extensions.
-- `terraform/static_web_app.tf` owns the `azurerm_static_web_app`, its CNAME record, and custom domain binding. This repo resolves its resource group and DNS zone directly via data sources — it does not consume `platform-hosting`/`platform-monitoring` remote state.
+- `terraform/static_web_app.tf` owns the `azurerm_static_web_app`, its Cloudflare CNAME record, and custom domain binding. The resource group is resolved via a data source; the Cloudflare zone ID is configured per environment. This repo does not consume `platform-hosting`/`platform-monitoring` remote state.
 - Commit each root's `.terraform-version` and `.terraform.lock.hcl`. Select the exact root CLI pin before invoking Terraform; normal initialization uses `-lockfile=readonly`. Regenerate provider selections only in a reviewed dependency-update PR; never commit state, plans, or `.terraform/`. `package-lock.json` remains ignored under the existing application policy.
 
 ## Do not

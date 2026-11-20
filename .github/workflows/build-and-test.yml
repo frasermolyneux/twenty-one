@@ -59,6 +59,8 @@ jobs:
   terraform-plan-dev:
     needs: detect-changes
     if: needs.detect-changes.outputs.terraform == 'true'
+    env:
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_KEY }}
     permissions:
       contents: read
       id-token: write

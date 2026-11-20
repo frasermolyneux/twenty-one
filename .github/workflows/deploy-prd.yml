@@ -33,6 +33,8 @@ jobs:
             terraform:terraform/**
 
   terraform-state-check-dev:
+    env:
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_KEY }}
     if: github.event_name != 'schedule'
     permissions:
       contents: read
@@ -91,6 +93,8 @@ jobs:
           path: src
 
   terraform-plan-and-apply-dev:
+    env:
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_KEY }}
     if: github.event_name != 'schedule'
     permissions:
       contents: read
@@ -189,6 +193,8 @@ jobs:
           skip_app_build: true
 
   terraform-plan-and-apply-prd:
+    env:
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_KEY }}
     permissions:
       contents: read
       id-token: write

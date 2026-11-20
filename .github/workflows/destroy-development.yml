@@ -9,6 +9,8 @@ permissions: {}
 
 jobs:
   terraform-destroy-dev:
+    env:
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_KEY }}
     permissions:
       id-token: write
       contents: read

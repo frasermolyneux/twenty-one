@@ -13,7 +13,7 @@ Target: Engineers working on twenty-one (Azure Static Web App). Covers branch st
 ### Pull Requests → main
 - **pr-verify.yml**: Validation pipeline (runs on PR open, updates, reopen, ready for review, label changes)
   - Build and package static site
-  - Terraform plan for dev by default (skips dependabot and drafts)
+  - Terraform plan for dev by default (skips drafts)
   - Terraform plan+apply and deploy to dev when labeled `deploy-dev` (Dependabot-authored PRs are excluded from apply/deploy even when labeled; validate dev deploys from a non-dependabot branch)
   - Terraform plan for prd when labeled `run-prd-plan`
   - Concurrency groups prevent parallel dev/prd operations
@@ -75,7 +75,7 @@ graph TD
 
 ## Copilot & Label Flow
 
-- Copilot branches follow the same rules; drafts and dependabot PRs skip Terraform by default
+- Copilot branches follow the same rules; draft PRs skip Terraform by default
 - Add `deploy-dev` to run dev plan/apply + deploy; add `run-prd-plan` to run the prd plan
 - Dependabot-authored PRs only ever run the read-only dev plan; the `deploy-dev` apply/deploy jobs are guarded to non-dependabot authors, so exercise the dev deployment from a regular feature branch
 
@@ -104,3 +104,5 @@ OIDC authentication uses GitHub environment variables (not secrets):
 - `AZURE_SUBSCRIPTION_ID`: Target subscription
 
 Defined in **Development** and **Production** environments within GitHub repository settings.
+
+Cloudflare DNS access uses the `CLOUDFLARE_API_KEY` GitHub Actions environment secret in both environments. Dependabot PRs use a separate read-only `CLOUDFLARE_API_KEY` Dependabot secret scoped to the `molyneux.me` zone for their dev plan.

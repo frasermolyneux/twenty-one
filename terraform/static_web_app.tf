@@ -7,20 +7,31 @@ resource "azurerm_static_web_app" "app" {
   sku_size = "Free"
 
   tags = var.tags
+
+  lifecycle {
+    ignore_changes = [repository_branch, repository_url]
+  }
 }
 
-resource "azurerm_dns_cname_record" "app" {
-  provider = azurerm.dns
+removed {
+  from = azurerm_dns_cname_record.app
 
-  name                = var.dns.subdomain
-  zone_name           = var.dns.domain
-  resource_group_name = data.azurerm_dns_zone.primary.resource_group_name
-  ttl                 = 300
-  record              = azurerm_static_web_app.app.default_host_name
+  lifecycle {
+    destroy = false
+  }
+}
+
+resource "cloudflare_dns_record" "app" {
+  zone_id = var.dns.zone_id
+  name    = "${var.dns.subdomain}.${var.dns.domain}"
+  type    = "CNAME"
+  content = azurerm_static_web_app.app.default_host_name
+  ttl     = 300
+  proxied = false
 }
 
 resource "time_sleep" "wait_for_cname" {
-  depends_on = [azurerm_dns_cname_record.app]
+  depends_on = [cloudflare_dns_record.app]
 
   create_duration = "60s"
 }
@@ -28,6 +39,6 @@ resource "time_sleep" "wait_for_cname" {
 resource "azurerm_static_web_app_custom_domain" "app" {
   depends_on        = [time_sleep.wait_for_cname]
   static_web_app_id = azurerm_static_web_app.app.id
-  domain_name       = "${azurerm_dns_cname_record.app.name}.${azurerm_dns_cname_record.app.zone_name}"
+  domain_name       = "${var.dns.subdomain}.${var.dns.domain}"
   validation_type   = "cname-delegation"
 }
