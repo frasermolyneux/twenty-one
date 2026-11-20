@@ -58,6 +58,7 @@ jobs:
     concurrency:
       group: ${{ github.repository }}-dev
     env:
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_KEY }}
       AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
       AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
@@ -73,6 +74,8 @@ jobs:
           AZURE_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}
 
   terraform-plan-and-apply-dev:
+    env:
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_KEY }}
     permissions:
       contents: read
       id-token: write
@@ -163,6 +166,7 @@ jobs:
     concurrency:
       group: ${{ github.repository }}-prd
     env:
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_KEY }}
       AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
       AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
